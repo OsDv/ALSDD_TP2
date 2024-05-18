@@ -229,6 +229,94 @@ void ResetTree(Node* root) {
     ResetTree(root->right);
 }
 
+// a function to delete leaves
+Node* deleteLeaves2(Node* root, int* result, int* i) {
+    if (root == NULL) {
+        return NULL;
+    }
+    if (root->left == NULL && root->right == NULL) {
+        result[*i] = root->data;
+        *i = *i + 1;
+        free(root);
+        return NULL;
+    }
+    root->left = deleteLeaves2(root->left, result, i);
+    root->right = deleteLeaves2(root->right, result, i);
+    return root;
+}
+
+int* V2(Node* root) {
+    if (root == NULL) {
+        return NULL;
+    }
+    int* result = (int*)calloc(100, sizeof(int));
+    int i = 0;
+    while(root != NULL) {
+        root = deleteLeaves2(root, result, &i);
+    }
+    return result;
+}
+
+bool Verification2(Node* root, int* arr1, int size) {
+    if (root == NULL) {
+        return false;
+    }
+    Node* duplicate = duplicateTree(root);
+    int* arr2 = V2(duplicate);
+    for (int i = 0; i < size; i++) {
+        if (arr1[i] != arr2[i]) {
+            free(arr2);
+            return false;
+        }
+    }
+    free(arr2);
+    return true;
+}
+
+Node* deleteLeaves4(Node* root, int* result, int* i) {
+    if (root == NULL) {
+        return NULL;
+    }
+    if (root->left == NULL && root->right == NULL) {
+        result[*i] = root->data;
+        *i = *i + 1;
+        free(root);
+        return NULL;
+    }
+    // Process the right subtree first
+    root->right = deleteLeaves4(root->right, result, i);
+    root->left = deleteLeaves4(root->left, result, i);
+    return root;
+}
+
+int* V4(Node* root) {
+    if (root == NULL) {
+        return NULL;
+    }
+    int* result = (int*)calloc(100, sizeof(int));
+    int i = 0;
+    while(root != NULL) {
+        root = deleteLeaves4(root, result, &i);
+    }
+    return result;
+}
+
+bool Verification4(Node* root, int* arr1, int size) {
+    if (root == NULL) {
+        return false;
+    }
+    Node* duplicate = duplicateTree(root);
+    int* arr2 = V4(duplicate);
+    for (int i = 0; i < size; i++) {
+        if (arr1[i] != arr2[i]) {
+            free(arr2);
+            return false;
+        }
+    }
+    free(arr2);
+    return true;
+}
+
 int main() {
     Node* root = NULL;
     root = insertNode(root, 45);
@@ -252,10 +340,12 @@ int main() {
     int* result = Traversal2(root);
     printf("Traversal 2: ");
     printArray(result, 18);
+    printf("Verification 2: %d\n", Verification2(root, result, 18));
     ResetTree(root);
     result = Traversal4(root);
     printf("Traversal 4: ");
     printArray(result, 18);
+    printf("Verification 4: %d\n", Verification4(root, result, 18));
     free(result);
     printf("\n");
 }
