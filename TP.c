@@ -72,7 +72,7 @@ Node* createNode(int data) {
     return newNode;
 }
 
-void LeafbyLeaf(Queue* queue, Node* root) {
+void LeafbyLeaf1(Queue* queue, Node* root) {
     if (root == NULL || root->visited) {
         return;
     }
@@ -81,10 +81,10 @@ void LeafbyLeaf(Queue* queue, Node* root) {
         root->visited = true;
     } else {
         if (root->left != NULL && !root->left->visited) {
-            LeafbyLeaf(queue, root->left);
+            LeafbyLeaf1(queue, root->left);
         }
         if (root->right != NULL && !root->right->visited) {
-            LeafbyLeaf(queue, root->right);
+            LeafbyLeaf1(queue, root->right);
         }
     }
 }
@@ -99,7 +99,43 @@ void Traversal2(Node* root) {
         return;
     }
     while (!root->visited) {
-        LeafbyLeaf(queue, root);
+        LeafbyLeaf1(queue, root);
+        while (!isEmpty(queue)) {
+            Node* node = dequeue(queue);
+            printf("%d ", node->data);
+        }
+    }
+    destroyQueue(queue);
+}
+
+void LeafbyLeaf2(Queue* queue, Node* root) {
+    if (root == NULL || root->visited) {
+        return;
+    }
+    if ((root->left == NULL || root->left->visited) && (root->right == NULL || root->right->visited)) {
+        enqueue(queue, root);
+        root->visited = true;
+    } else {
+        if (root->right != NULL && !root->right->visited) {
+            LeafbyLeaf2(queue, root->right);
+        }
+        if (root->left != NULL && !root->left->visited) {
+            LeafbyLeaf2(queue, root->left);
+        }
+    }
+}
+
+void Traversal4(Node* root) {
+    if (root == NULL) {
+        return;
+    }
+    Queue* queue = createQueue();
+    if (queue == NULL) {
+        printf("Failed to create queue. Insufficient memory.\n");
+        return;
+    }
+    while (!root->visited) {
+        LeafbyLeaf2(queue, root);
         while (!isEmpty(queue)) {
             Node* node = dequeue(queue);
             printf("%d ", node->data);
@@ -172,8 +208,8 @@ int main() {
     root = insertNode(root, 90);
     root = insertNode(root, 98);
     root = insertNode(root, 88);
-    Traversal2(root);
-    print2DUtil(root,0);
+    Traversal4(root);
+    printf("\n");
 }
 
 
