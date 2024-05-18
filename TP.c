@@ -25,6 +25,7 @@ Queue* createQueue() {
     return queue;
 }
 
+// Function to check if the queue is empty
 bool isEmpty(Queue* queue) {
     return (queue->front == NULL);
 }
@@ -89,23 +90,29 @@ void LeafbyLeaf1(Queue* queue, Node* root) {
     }
 }
 
-void Traversal2(Node* root) {
+int* Traversal2(Node* root) {
     if (root == NULL) {
-        return;
+        return NULL;
     }
     Queue* queue = createQueue();
     if (queue == NULL) {
         printf("Failed to create queue. Insufficient memory.\n");
-        return;
+        return NULL;
     }
+    // declare an array of int to store the result
+    int* result = (int*)calloc(100, sizeof(int));
+    int i = 0;
     while (!root->visited) {
         LeafbyLeaf1(queue, root);
         while (!isEmpty(queue)) {
             Node* node = dequeue(queue);
-            printf("%d ", node->data);
+            // add the node data to the result array
+            result[i] = node->data;
+            i++;
         }
     }
     destroyQueue(queue);
+    return result;
 }
 
 void LeafbyLeaf2(Queue* queue, Node* root) {
@@ -125,23 +132,29 @@ void LeafbyLeaf2(Queue* queue, Node* root) {
     }
 }
 
-void Traversal4(Node* root) {
+int* Traversal4(Node* root) {
     if (root == NULL) {
-        return;
+        return NULL;
     }
     Queue* queue = createQueue();
     if (queue == NULL) {
         printf("Failed to create queue. Insufficient memory.\n");
-        return;
+        return NULL;
     }
+    // declare an array of int to store the result
+    int* result = (int*)calloc(100, sizeof(int));
+    int i = 0;
     while (!root->visited) {
         LeafbyLeaf2(queue, root);
         while (!isEmpty(queue)) {
             Node* node = dequeue(queue);
-            printf("%d ", node->data);
+            // add the node data to the result array
+            result[i] = node->data;
+            i++;
         }
     }
     destroyQueue(queue);
+    return result;
 }
 
 Node* insertNode(Node* root, int data) {
@@ -188,6 +201,34 @@ void print2D(Node *root)
    print2DUtil(root, 0);  
 }  
 
+// function to print an array
+void printArray(int* arr, int size) {
+    for (int i = 0; i < size; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+}
+
+// a function that duplicates a tree
+Node* duplicateTree(Node* root) {
+    if (root == NULL) {
+        return NULL;
+    }
+    Node* newRoot = createNode(root->data);
+    newRoot->left = duplicateTree(root->left);
+    newRoot->right = duplicateTree(root->right);
+    return newRoot;
+}
+
+void ResetTree(Node* root) {
+    if (root == NULL) {
+        return;
+    }
+    root->visited = false;
+    ResetTree(root->left);
+    ResetTree(root->right);
+}
+
 int main() {
     Node* root = NULL;
     root = insertNode(root, 45);
@@ -208,7 +249,14 @@ int main() {
     root = insertNode(root, 90);
     root = insertNode(root, 98);
     root = insertNode(root, 88);
-    Traversal4(root);
+    int* result = Traversal2(root);
+    printf("Traversal 2: ");
+    printArray(result, 18);
+    ResetTree(root);
+    result = Traversal4(root);
+    printf("Traversal 4: ");
+    printArray(result, 18);
+    free(result);
     printf("\n");
 }
 
