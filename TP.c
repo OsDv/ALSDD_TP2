@@ -317,6 +317,75 @@ bool Verification4(Node* root, int* arr1, int size) {
     return true;
 }
 
+void storeLeafToRootPathsRecurL(struct Node* node, int path[], int pathLen, int* arr, int* arrLen) {
+    if (node == NULL) return;
+
+    path[pathLen] = node->data;
+    pathLen++;
+
+    if (node->left == NULL && node->right == NULL) {
+        for (int i = pathLen - 1; i >= 0; i--) {
+            arr[*arrLen + pathLen - 1 - i] = path[i];
+        }
+        *arrLen += pathLen;
+    } else {
+        storeLeafToRootPathsRecurL(node->left, path, pathLen, arr, arrLen);
+        storeLeafToRootPathsRecurL(node->right, path, pathLen, arr, arrLen);
+    }
+}
+
+int* removeDuplicates(int* arr, int* size) {
+    int* result = (int*)malloc(*size * sizeof(int));
+    int* hashTable = (int*)calloc(10000, sizeof(int));
+    int resultSize = 0;
+
+    for (int i = 0; i < *size; i++) {
+        if (hashTable[arr[i]] == 0) {
+            hashTable[arr[i]] = 1;
+            result[resultSize++] = arr[i];
+        }
+    }
+
+    *size = resultSize;
+    free(hashTable);
+    return result;
+}
+
+int* V1(struct Node* node, int* size) {
+    int* arr = (int*)malloc(1000 * sizeof(int));
+    int path[1000];
+    *size = 0;
+    storeLeafToRootPathsRecurL(node, path, 0, arr, size);
+    arr = removeDuplicates(arr, size);
+    return arr;
+}
+
+void storeLeafToRootPathsRecurR(struct Node* node, int path[], int pathLen, int* arr, int* arrLen) {
+    if (node == NULL) return;
+
+    path[pathLen] = node->data;
+    pathLen++;
+
+    if (node->left == NULL && node->right == NULL) {
+        for (int i = pathLen - 1; i >= 0; i--) {
+            arr[*arrLen + pathLen - 1 - i] = path[i];
+        }
+        *arrLen += pathLen;
+    } else {
+        storeLeafToRootPathsRecurR(node->right, path, pathLen, arr, arrLen);
+        storeLeafToRootPathsRecurR(node->left, path, pathLen, arr, arrLen);
+    }
+}
+
+int* V3(struct Node* node, int* size) {
+    int* arr = (int*)malloc(1000 * sizeof(int));
+    int path[1000];
+    *size = 0;
+    storeLeafToRootPathsRecurR(node, path, 0, arr, size);
+    arr = removeDuplicates(arr, size);
+    return arr;
+}
+
 int main() {
     Node* root = NULL;
     root = insertNode(root, 45);
@@ -337,17 +406,14 @@ int main() {
     root = insertNode(root, 90);
     root = insertNode(root, 98);
     root = insertNode(root, 88);
-    int* result = Traversal2(root);
-    printf("Traversal 2: ");
-    printArray(result, 18);
-    printf("Verification 2: %d\n", Verification2(root, result, 18));
-    ResetTree(root);
-    result = Traversal4(root);
-    printf("Traversal 4: ");
-    printArray(result, 18);
-    printf("Verification 4: %d\n", Verification4(root, result, 18));
+    int size;
+    int* result = V1(root, &size);
+    printArray(result, size);
+    result = V3(root, &size);
+    printArray(result, size);
     free(result);
-    printf("\n");
+    return 0;
+    
 }
 
 
