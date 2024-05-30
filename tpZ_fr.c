@@ -7,7 +7,7 @@
 
   /* 2023/2024 
 ALSDD TP 2  , TPZ 
-By BELGUESMIA OUSSAMA & BELLOUL ZINE EL DINE 
+By BELGUESMIA OUSSAMA & BELLOUL ZINE EDDINE 
 from: 1CP7 */
 #define RESET   "\e[m"
 #define RED     "\033[31m"
@@ -1539,7 +1539,7 @@ so we have the leafs ordred from right to left and do the same process in the me
      while( ( ! Exit )) {
   printf("%s",CLEAR);
   printf("%s%s%s",BOLD,"===== ALSDD TP2 (Z) By  ======\n",  RESET);
-  printf("%s%s%s",BOLD, "BELGUESMIA OUSSAMA & BELLOUL WASSIM ZINE El DINE 1CP7\n ", RESET);
+  printf("%s%s%s",BOLD, "BELGUESMIA OUSSAMA & BELLOUL WASSIM ZINE EDDINE 1CP7\n ", RESET);
   printf("%s%s%s",YELLOW, "==============================================================================\n", RESET);
   printf("%s%s%s",GREEN,"The program has created 10 BST of 100 random value\n", RESET);
   printf("%s%s%s",BOLD,"You can perform the following tasks%s\n",  RESET);
