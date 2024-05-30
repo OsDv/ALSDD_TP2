@@ -1,3 +1,6 @@
+#include <stdbool.h>
+#include <stdlib.h>
+#include <stdio.h>
 void LeafbyLeaf(Queue* queue, Node* root) {
     if (root == NULL || root->visited) {
         return;

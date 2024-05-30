@@ -9,7 +9,15 @@
 ALSDD TP 2  , TPZ 
 By BELGUESMIA OUSSAMA & BELLOUL ZINE EL DINE 
 from: 1CP7 */
-
+#define RESET   "\e[m"
+#define RED     "\033[31m"
+#define GREEN   "\033[32m"
+#define YELLOW  "\033[33m"
+#define BLUE    "\033[34m"
+#define MAGENTA "\033[35m"
+#define CYAN    "\033[36m"
+#define BOLD "\e[1m"
+   
    
   #include <stdio.h>
   #include <stdlib.h>
@@ -1515,26 +1523,31 @@ so we have the leafs ordred from right to left and do the same process in the me
       /** Body of function **/
      Exit  =  False ;
      while( ( ! Exit )) {
-       printf ( " %s", "=== ALSDD TP2 (Z) By  ===\n" ) ;
-       printf ( " %s", "BELGUESMIA OUSSAMA & BELLOUL WASSIM ZINE El DINE\n" ) ;
-       printf ( " %s", "==============================================================================\n" ) ;
-       printf ( " %s", "The program has created 10 BST of 100 random value\n" ) ;
-       printf ( " %s", "You can perform the following tasks\n" ) ;
-       printf ( " %s", "  1. choose a tree (1-10)\n" ) ;
-       printf ( " %s", "  2. check the tree correctness\n" ) ;
-       printf ( " %s", "  3. travers the tree branch by branch from bottom to top  & from left to righ\n" ) ;
-       printf ( " %s", "  4. travers the tree branch by branch from bottom to top & from right to left\n" ) ;
-       printf ( " %s", "  5. traverse the tree leaf by leaf from left right\n" ) ;
-       printf ( " %s", "  6. traverse the tree leaf by leaf from right to left\n" ) ;
-       printf ( " %s", "  7. check the corectness of the 1st traversal\n" ) ;
-       printf ( " %s", "  8. check the corectness of the 2nd traversal\n" ) ;
-       printf ( " %s", "  9. check the corectness of the 3rd traversal\n" ) ;
-       printf ( " %s", " 10. check the corectness of the 4th traversal\n" ) ;
-       printf ( " %s", " 0. EXIT..\n" ) ;
-printf ( " Enter your choice" ) ;
+  printf("%s%s%s",BOLD,"===== ALSDD TP2 (Z) By  ======\n",  RESET);
+  printf("%s%s%s",BOLD, "BELGUESMIA OUSSAMA & BELLOUL WASSIM ZINE El DINE\n", RESET);
+  printf("%s%s%s",YELLOW, "==============================================================================\n", RESET);
+  printf("%s%s%s",GREEN,"The program has created 10 BST of 100 random value\n", RESET);
+  printf("%s%s%s",BOLD,"You can perform the following tasks%s\n",  RESET);
+
+  printf("%s ", BLUE);  // Start of blue color for menu options
+  printf("  1. choose a tree (1-10)\n");
+  printf("  2. check the tree correctness\n");
+  printf("  3. travers the tree branch by branch from bottom to top  & from left to right\n");
+  printf("  4. travers the tree branch by branch from bottom to top & from right to left\n");
+  printf("  5. traverse the tree leaf by leaf from left right\n");
+  printf("  6. traverse the tree leaf by leaf from right to left\n");
+  printf("  7. check the corectness of the 1st traversal\n");
+  printf("  8. check the corectness of the 2nd traversal\n");
+  printf("  9. check the corectness of the 3rd traversal\n");
+  printf(" 10. check the corectness of the 4th traversal\n");
+  printf(" %s", RESET);  // Reset color to default
+
+  printf(" 0. EXIT..\n");
+  printf("Enter your choice: ");
 
        scanf ( " %d", &Choice ) ;
        if( ( Choice == 1 )) {
+           printf ( " Enter the number of tree you choose (1-10)" ) ;
          scanf ( " %d", &Tree_number ) ;
          while( ( Tree_number < 1 ) || ( Tree_number > 10 )) {
            printf ( " Enter the number of tree you choose (1-10)" ) ;

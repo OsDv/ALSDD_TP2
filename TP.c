@@ -351,7 +351,7 @@ int* removeDuplicates(int* arr, int* size) {
     return result;
 }
 
-int* V1(struct Node* node, int* size) {
+int* V1(struct Node* node, int* size) { // 
     int* arr = (int*)malloc(1000 * sizeof(int));
     int path[1000];
     *size = 0;
@@ -406,8 +406,12 @@ int main() {
     root = insertNode(root, 90);
     root = insertNode(root, 98);
     root = insertNode(root, 88);
-    int size;
-    int* result = V1(root, &size);
+    print2D(root);
+    int size=18;
+    int *res=Traversal2(root);
+    
+    int* result = V2(root);
+    printArray(res,size);
     printArray(result, size);
     result = V3(root, &size);
     printArray(result, size);
