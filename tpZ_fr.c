@@ -17,11 +17,14 @@ from: 1CP7 */
 #define MAGENTA "\033[35m"
 #define CYAN    "\033[36m"
 #define BOLD "\e[1m"
+#define CLEAR "\033[2J"
+
    
    
   #include <stdio.h>
   #include <stdlib.h>
   #include <Time.h>
+  #include <unistd.h>
 
   typedef int bool ;
 
@@ -372,18 +375,19 @@ from: 1CP7 */
   /** Variables of main program **/
   Pointer_LATib Tmp1=NULL;
   Pointer_LATib Tmp2=NULL;
-  int N;
-  int M;
-  int T;
-  int Counter1;
-  int Tree_number;
-  Pointer_ATib A=NULL;
-  Pointer_ATib Index_l=NULL;
-  bool Test;
-  bool Firstelement;
-  Typevect_V50_100ATib Result_array;
-  Typevect_V10ATib Trees_array;
-  Typevect_V100i Testing_array;
+  int N;  // Number of elements of tress
+  int M;  //number of trees
+  int T;  //Counter
+  int Counter1; //Counter
+  int Tree_number;  //Active tree number
+  Pointer_ATib A=NULL;  //Pointer to BST used to traverse tree
+  Pointer_ATib Index_l=NULL;  //Pointer to BST used to traverse tree
+  bool Test;  // boolean to save check tree result
+  bool Firstelement;  // indicate the begining of linked list 
+  Typevect_V50_100ATib Result_array;  // array of [40,100] where each line represents the result of tree traversal
+  // first tree traversals are in 1,2,3,4 lines 2nd tree in 5,6,7,8 lines....
+  Typevect_V10ATib Trees_array; // array of 10 pointers to bst each points to a tree root
+  Typevect_V100i Testing_array; // array contrains the result of checking traversal after calling checking functions
   int _Px1;
   int _Px2;
   int _Px3;
@@ -546,7 +550,8 @@ from: 1CP7 */
        } ;
        if( ! Empty_stack_PATib ( S )) {
          Pop_PATib (& S , &P ) ;
-         printf ( " %d", Struct1_Tib(Node_value_ATib(P)) ) ;
+         printf ( "%s %d%s->",BOLD, Struct1_Tib(Node_value_ATib(P)),GREEN ) ;
+         printf("%s",RESET);
          P  =  Rc_ATib ( P ) ;
          }
        else
@@ -555,9 +560,7 @@ from: 1CP7 */
         
        } ;
       
-     } ;
-     printf ( " %s", "=======" ) ;
-    
+     } ;    
     }
   /*function checks if bst is builded correctly using inorder traversal and returns a boolean 
    which is true if and only if each element is inferior than its next inorder and returns the number of elements*/
@@ -607,9 +610,7 @@ from: 1CP7 */
        } ;
       
      } ;
-     Checkbst2  =  Testb ;
-     printf ( " %d", *N_elements ) ;
-    
+     Checkbst2  =  Testb ;    
      return Checkbst2 ;
     }
   /*action to peform branch by branch  from left to right */
@@ -1398,9 +1399,10 @@ so we have the leafs ordred from right to left and do the same process in the me
       int Index1;
 
       /** Body of function **/
-     printf ( " %s", "the traversal result:" ) ;
+     printf ( " %s%s%s",BOLD, "the traversal result:\n",RESET ) ;
      for( Index1  =  1 ;Index1 <=  100 ; ++Index1){
-       printf ( " %d", Struct1_Tib(Node_value_ATib(Element_V50_100ATib(Result_array,*Index,Index1))) ) ;
+      usleep(40000);
+       printf ( "%s %d%s%s->%s",BOLD, Struct1_Tib(Node_value_ATib(Element_V50_100ATib(Result_array,*Index,Index1))),RESET,GREEN,RESET ) ;
       
      } ;
     
@@ -1420,13 +1422,13 @@ so we have the leafs ordred from right to left and do the same process in the me
      Check_result  =  True ;
      Index_l  =  Element_V10ATib ( Trees_array , Tree_number   ) ;
      if( ( *Index == 1 )) {
-       printf ( " %s", "The traversal result:" ) ;
        _Px1 =  ( ( Tree_number - 1 ) * 4 ) + 1 ;
        Write_traversal ( &_Px1) ;
        Check_correctness_byb_ltr ( & Index_l ) ;
-       printf ( " %s", "Check traversal result:" ) ;
+       printf ( "%s%s %s %s",BOLD,YELLOW, "\nCheck traversal result: \n",RESET ) ;
        for( Index1  =  1 ;Index1 <=  100 ; ++Index1){
-         printf ( " %d", Element_V100i(Testing_array,Index1) ) ;
+               printf ( "%s %d%s%s->%s",BOLD, Element_V100i(Testing_array,Index1),RESET,GREEN,RESET ) ;
+                     usleep(40000);
          V  =  Struct1_Tib ( Node_value_ATib ( Element_V50_100ATib ( Result_array , ( ( Tree_number - 1 ) * 4 ) + 1 , Index1   ) )  ) ;
          if( ( ( Element_V100i ( Testing_array , Index1   ) ) != V )) {
            Check_result  =  False ;
@@ -1434,19 +1436,23 @@ so we have the leafs ordred from right to left and do the same process in the me
          } ;
         
        } ;
-       printf ( " %s", "Check result: " );
-       printf ( " %d", Check_result ) ;
+       printf ( "%s%s %s%s",BOLD,YELLOW, "\nCheck result: ",RESET );
+       if (Check_result)
+        printf ( "%s%s Correct %s",BOLD,GREEN,RESET) ;
+        else   printf ( "%s%s FALSE %s",BOLD,RED,RESET) ;
+
        }
      else
        {
        if( ( *Index == 2 )) {
-         printf ( " %s", "The traversal result:" ) ;
+         printf ( " %s", "The traversal result:\n " ) ;
          _Px2 =  ( ( Tree_number - 1 ) * 4 ) + 2 ;
          Write_traversal ( &_Px2) ;
          Check_correctness_byb_rtl ( & Index_l ) ;
-         printf ( " %s", "Check traversal result:" ) ;
+         printf ( "%s%s%s %s",BOLD,YELLOW, "\nCheck traversal result:\n",RESET ) ;
          for( Index1  =  1 ;Index1 <=  100 ; ++Index1){
-           printf ( " %d", Element_V100i(Testing_array,Index1) ) ;
+               printf ( "%s %d%s%s->%s",BOLD, Element_V100i(Testing_array,Index1),RESET,GREEN,RESET ) ;
+                     usleep(40000);
            V  =  Struct1_Tib ( Node_value_ATib ( Element_V50_100ATib ( Result_array , ( ( Tree_number - 1 ) * 4 ) + 2 , Index1   ) )  ) ;
            if( ( ( Element_V100i ( Testing_array , Index1   ) ) != V )) {
              Check_result  =  False ;
@@ -1454,19 +1460,22 @@ so we have the leafs ordred from right to left and do the same process in the me
            } ;
           
          } ;
-         printf ( " %s", "Check result: " );
-         printf ( " %d", Check_result ) ;
+         printf ( "%s%s %s%s",BOLD,YELLOW, "\nCheck result: ",RESET );
+       if (Check_result)
+        printf ( "%s%s Correct %s",BOLD,GREEN,RESET) ;
+        else   printf ( "%s%s FALSE %s",BOLD,RED,RESET) ;
          }
        else
          {
          if( ( *Index == 3 )) {
-           printf ( " %s", "The traversal result:" ) ;
+           printf ( " %s", "The traversal result:\n" ) ;
            _Px3 =  ( ( Tree_number - 1 ) * 4 ) + 3 ;
            Write_traversal ( &_Px3) ;
            Checkcorectness_lbl_ltr ( & Index_l ) ;
-           printf ( " %s", "Check traversal result:" ) ;
+           printf ( "%s%s%s %s",BOLD,YELLOW, "\nCheck traversal result:\n",RESET ) ;
            for( Index1  =  1 ;Index1 <=  100 ; ++Index1){
-             printf ( " %d", Element_V100i(Testing_array,Index1) ) ;
+               printf ( "%s %d%s%s->%s",BOLD, Element_V100i(Testing_array,Index1),RESET,GREEN,RESET ) ;
+                     usleep(40000);
              V  =  Struct1_Tib ( Node_value_ATib ( Element_V50_100ATib ( Result_array , ( ( Tree_number - 1 ) * 4 ) + 3 , Index1   ) )  ) ;
              if( ( ( Element_V100i ( Testing_array , Index1   ) ) != V )) {
                Check_result  =  False ;
@@ -1474,19 +1483,22 @@ so we have the leafs ordred from right to left and do the same process in the me
              } ;
             
            } ;
-           printf ( " %s", "Check result: " );
-           printf ( " %d", Check_result ) ;
+           printf ( "%s%s %s%s",BOLD,YELLOW, "\nCheck result: ",RESET );
+       if (Check_result)
+        printf ( "%s%s Correct %s",BOLD,GREEN,RESET) ;
+        else   printf ( "%s%s FALSE %s",BOLD,RED,RESET) ;
            }
          else
            {
            if( ( *Index == 4 )) {
-             printf ( " %s", "The traversal result:" ) ;
+             printf ( " %s", "The traversal result:\n" ) ;
              _Px4 =  ( ( Tree_number - 1 ) * 4 ) + 4 ;
              Write_traversal ( &_Px4) ;
              Checkcorectness_lbl_rtl ( & Index_l ) ;
-             printf ( " %s", "Check traversal result:" ) ;
+             printf ( "%s%s%s %s",BOLD,YELLOW, "\nCheck traversal result:\n",RESET ) ;
              for( Index1  =  1 ;Index1 <=  100 ; ++Index1){
-               printf ( " %d", Element_V100i(Testing_array,Index1) ) ;
+               printf ( "%s %d%s%s->%s",BOLD, Element_V100i(Testing_array,Index1),RESET,GREEN,RESET ) ;
+                     usleep(40000);
                V  =  Struct1_Tib ( Node_value_ATib ( Element_V50_100ATib ( Result_array , ( ( Tree_number - 1 ) * 4 ) + 4 , Index1   ) )  ) ;
                if( ( ( Element_V100i ( Testing_array , Index1   ) ) != V )) {
                  Check_result  =  False ;
@@ -1494,8 +1506,10 @@ so we have the leafs ordred from right to left and do the same process in the me
                } ;
               
              } ;
-             printf ( " %s", "Check result: " );
-             printf ( " %d", Check_result ) ;
+             printf ( "%s%s %s%s",BOLD,YELLOW, "\nCheck result: ",RESET );
+       if (Check_result)
+        printf ( "%s%s Correct %s",BOLD,GREEN,RESET) ;
+        else   printf ( "%s%s FALSE %s",BOLD,RED,RESET) ;
             
            } ;
           
@@ -1523,8 +1537,9 @@ so we have the leafs ordred from right to left and do the same process in the me
       /** Body of function **/
      Exit  =  False ;
      while( ( ! Exit )) {
+  printf("%s",CLEAR);
   printf("%s%s%s",BOLD,"===== ALSDD TP2 (Z) By  ======\n",  RESET);
-  printf("%s%s%s",BOLD, "BELGUESMIA OUSSAMA & BELLOUL WASSIM ZINE El DINE\n", RESET);
+  printf("%s%s%s",BOLD, "BELGUESMIA OUSSAMA & BELLOUL WASSIM ZINE El DINE 1CP7\n ", RESET);
   printf("%s%s%s",YELLOW, "==============================================================================\n", RESET);
   printf("%s%s%s",GREEN,"The program has created 10 BST of 100 random value\n", RESET);
   printf("%s%s%s",BOLD,"You can perform the following tasks%s\n",  RESET);
@@ -1543,14 +1558,14 @@ so we have the leafs ordred from right to left and do the same process in the me
   printf(" %s", RESET);  // Reset color to default
 
   printf(" 0. EXIT..\n");
-  printf("Enter your choice: ");
+  printf("Enter your choice:  ");
 
        scanf ( " %d", &Choice ) ;
        if( ( Choice == 1 )) {
-           printf ( " Enter the number of tree you choose (1-10)" ) ;
+           printf ( " Enter the number of tree you choose (1-10): " ) ;
          scanf ( " %d", &Tree_number ) ;
          while( ( Tree_number < 1 ) || ( Tree_number > 10 )) {
-           printf ( " Enter the number of tree you choose (1-10)" ) ;
+           printf ( " Enter the number of tree you choose (1-10): " ) ;
            scanf ( " %d", &Tree_number ) ;
           
          } ;
@@ -1559,71 +1574,73 @@ so we have the leafs ordred from right to left and do the same process in the me
          {
          if( ( Choice == 2 )) {
            Index_l  =  Element_V10ATib ( Trees_array , Tree_number   ) ;
-           printf ( " %s", "You chose option 2: check the tree correctness" ) ;
+           printf ( "%s%s%s %s",BOLD,MAGENTA, "You chose option 2: check the tree correctness\n",RESET ) ;
            Test  =  Checkbst ( & Index_l , & Counter1 ) ;
-           printf ( " %s", "You are treating tree number: " );
-           printf ( " %d", Tree_number ) ;
-           printf ( " %s", "The tree has: " );
-           printf ( " %d", Counter1 );
-           printf ( " %s", " element" ) ;
-           printf ( " %s", "The check result is " );
-           printf ( " %d", Test ) ;
-           printf ( " %s", "Traversal inorder:" ) ;
+           printf ( " %s%s%s",BOLD,YELLOW, "You are treating tree number: " );
+           printf ( " %s%d \n",GREEN, Tree_number ) ;
+           printf ( " %s%s",YELLOW, "The tree has: " );
+           printf ( "%s %d",GREEN, Counter1 );
+           printf ( "%s %s\n",YELLOW, " element" ) ;
+           printf ( " %s", "The check result is : " );
+        if (Test)
+        printf ( "%s%s Correct %s",BOLD,GREEN,RESET) ;
+        else   printf ( "%s%s FALSE %s",BOLD,RED,RESET) ;
+           printf ( "\n%s%s%s %s",BOLD,YELLOW, "Traversal inorder:\n",RESET ) ;
            Inorder ( & Index_l ) ;
            }
          else
            {
            if( ( Choice == 3 )) {
-             printf ( " %s", "You chose travers the tree branch by branch from bottom to top&from left to right" ) ;
+             printf ( "%s%s %s%s",MAGENTA,BOLD, "You chose travers the tree branch by branch from bottom to top&from left to right  :\n",RESET ) ;
              _Px1 =  ( ( Tree_number - 1 ) * 4 ) + 1 ;
              Write_traversal ( &_Px1) ;
              }
            else
              {
              if( ( Choice == 4 )) {
-               printf ( " %s", "You chose option 4: travers the tree branch by branch from bottom to top & from right to left" ) ;
+               printf ( "%s%s %s%s",MAGENTA,BOLD, "You chose option 4: travers the tree branch by branch from bottom to top & from right to left  :\n",RESET ) ;
                _Px2 =  ( ( Tree_number - 1 ) * 4 ) + 2 ;
                Write_traversal ( &_Px2) ;
                }
              else
                {
                if( ( Choice == 5 )) {
-                 printf ( " %s", "You chose option 5: traverse the tree leaf by leaf from left right" ) ;
+                 printf ( "%s%s %s%s",MAGENTA,BOLD, "You chose option 5: traverse the tree leaf by leaf from left right :\n",RESET ) ;
                  _Px3 =  ( ( Tree_number - 1 ) * 4 ) + 3 ;
                  Write_traversal ( &_Px3) ;
                  }
                else
                  {
                  if( ( Choice == 6 )) {
-                   printf ( " %s", "You chose option 6: traverse the tree leaf by leaf from right to left" ) ;
+                   printf ( "%s%s %s%s",MAGENTA,BOLD, "You chose option 6: traverse the tree leaf by leaf from right to left  :\n",RESET ) ;
                    _Px4 =  ( ( Tree_number - 1 ) * 4 ) + 4 ;
                    Write_traversal ( &_Px4) ;
                    }
                  else
                    {
                    if( ( Choice == 7 )) {
-                     printf ( " %s", "You chose option 7: check the corectness of the 1st traversal" ) ;
+                     printf ( "%s%s %s%s",MAGENTA,BOLD, "You chose option 7: check the corectness of the 1st traversal  :\n",RESET ) ;
                      _Px5 =  1 ;
                      Check_correctness ( &_Px5) ;
                      }
                    else
                      {
                      if( ( Choice == 8 )) {
-                       printf ( " %s", "You chose option 8: check the corectness of the 2nd traversal" ) ;
+                       printf ( "%s%s %s%s",MAGENTA,BOLD, "You chose option 8: check the corectness of the 2nd traversal  :\n",RESET ) ;
                        _Px6 =  2 ;
                        Check_correctness ( &_Px6) ;
                        }
                      else
                        {
                        if( ( Choice == 9 )) {
-                         printf ( " %s", "You chose option 9: check the corectness of the 3rd traversal" ) ;
+                         printf ( "%s%s %s%s",MAGENTA,BOLD, "You chose option 9: check the corectness of the 3rd traversal  :\n",RESET ) ;
                          _Px7 =  3 ;
                          Check_correctness ( &_Px7) ;
                          }
                        else
                          {
                          if( ( Choice == 10 )) {
-                           printf ( " %s", "You chose option 10: check the corectness of the 4th traversal" ) ;
+                           printf ( "%s%s %s%s",MAGENTA,BOLD, "You chose option 10: check the corectness of the 4th traversal :\n",RESET ) ;
                            _Px8 =  4 ;
                            Check_correctness ( &_Px8) ;
                            }
@@ -1641,9 +1658,10 @@ so we have the leafs ordred from right to left and do the same process in the me
            }
          }
        } ;
-      
+      printf("%s%s\nPress ENTER to continue..%s",RED,BOLD,RESET);
+     getchar() ;getchar() ;
      } ;
-     printf ( " %s", "Exiting program....." ) ;
+     printf ( " %s", "\nExiting program....." ) ;
     
     }
 
