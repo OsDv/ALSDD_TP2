@@ -1531,10 +1531,13 @@ so we have the leafs ordred from right to left and do the same process in the me
        printf ( " %s", "  9. check the corectness of the 3rd traversal\n" ) ;
        printf ( " %s", " 10. check the corectness of the 4th traversal\n" ) ;
        printf ( " %s", " 0. EXIT..\n" ) ;
+printf ( " Enter your choice" ) ;
+
        scanf ( " %d", &Choice ) ;
        if( ( Choice == 1 )) {
          scanf ( " %d", &Tree_number ) ;
          while( ( Tree_number < 1 ) || ( Tree_number > 10 )) {
+           printf ( " Enter the number of tree you choose (1-10)" ) ;
            scanf ( " %d", &Tree_number ) ;
           
          } ;
