@@ -1542,13 +1542,13 @@ so we have the leafs ordred from right to left and do the same process in the me
   printf("%s%s%s",BOLD, "BELGUESMIA OUSSAMA & BELLOUL WASSIM ZINE EDDINE 1CP7\n ", RESET);
   printf("%s%s%s",YELLOW, "==============================================================================\n", RESET);
   printf("%s%s%s",GREEN,"The program has created 10 BST of 100 random value\n", RESET);
-  printf("%s%s%s",BOLD,"You can perform the following tasks%s\n",  RESET);
+  printf("%s%s%s",BOLD,"You can perform the following tasks: \n",  RESET);
 
-  printf("%s ", BLUE);  // Start of blue color for menu options
+  printf("%s", BLUE);  // Start of blue color for menu options
   printf("  1. choose a tree (1-10)\n");
   printf("  2. check the tree correctness\n");
-  printf("  3. travers the tree branch by branch from bottom to top  & from left to right\n");
-  printf("  4. travers the tree branch by branch from bottom to top & from right to left\n");
+  printf("  3. traverse the tree branch by branch from bottom to top  & from left to right\n");
+  printf("  4. traverse the tree branch by branch from bottom to top & from right to left\n");
   printf("  5. traverse the tree leaf by leaf from left right\n");
   printf("  6. traverse the tree leaf by leaf from right to left\n");
   printf("  7. check the corectness of the 1st traversal\n");
@@ -1574,14 +1574,14 @@ so we have the leafs ordred from right to left and do the same process in the me
          {
          if( ( Choice == 2 )) {
            Index_l  =  Element_V10ATib ( Trees_array , Tree_number   ) ;
-           printf ( "%s%s%s %s",BOLD,MAGENTA, "You chose option 2: check the tree correctness\n",RESET ) ;
+           printf ( "%s%s%s%s",BOLD,MAGENTA, "You chose option 2: check the tree correctness\n",RESET ) ;
            Test  =  Checkbst ( & Index_l , & Counter1 ) ;
-           printf ( " %s%s%s",BOLD,YELLOW, "You are treating tree number: " );
-           printf ( " %s%d \n",GREEN, Tree_number ) ;
-           printf ( " %s%s",YELLOW, "The tree has: " );
-           printf ( "%s %d",GREEN, Counter1 );
-           printf ( "%s %s\n",YELLOW, " element" ) ;
-           printf ( " %s", "The check result is : " );
+           printf ( "%s%s%s",BOLD,YELLOW, "You are treating tree number: " );
+           printf ( "%s%d\n",GREEN, Tree_number ) ;
+           printf ( "%s%s",YELLOW, "The tree has: " );
+           printf ( "%s%d",GREEN, Counter1 );
+           printf ( "%s%s\n",YELLOW, " element" ) ;
+           printf ( "%s", "The check result is : " );
         if (Test)
         printf ( "%s%s Correct %s",BOLD,GREEN,RESET) ;
         else   printf ( "%s%s FALSE %s",BOLD,RED,RESET) ;
